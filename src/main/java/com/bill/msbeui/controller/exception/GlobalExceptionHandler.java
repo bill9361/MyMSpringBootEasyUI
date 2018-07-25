@@ -21,7 +21,6 @@ public class GlobalExceptionHandler
 	public String exceptionHandler(Exception ex)
 	{
 		logger.info("GlobalExceptionHandler...哈哈，恭喜您出错啦");
-		logger.debug("GlobalExceptionHandler...哈哈，恭喜您出错啦aaaaaaa");
 		logger.error(ex.getMessage(), ex);
 		return "error/error.jsp";
 	}
