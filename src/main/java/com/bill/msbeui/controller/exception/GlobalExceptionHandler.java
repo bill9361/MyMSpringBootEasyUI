@@ -1,8 +1,9 @@
 package com.bill.msbeui.controller.exception;
 
-import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.bill.msbeui.util.LoggerUtil;
 
 
 /**
@@ -15,13 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler
 {
-	private static Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(value=Exception.class)
 	public String exceptionHandler(Exception ex)
 	{
-		logger.info("GlobalExceptionHandler...哈哈，恭喜您出错啦");
-		logger.error(ex.getMessage(), ex);
+		LoggerUtil.getLogger().info("GlobalExceptionHandler...哈哈，恭喜您出错啦");
+		LoggerUtil.getLogger().error(ex.getMessage(), ex);
 		return "error/error.jsp";
 	}
 	

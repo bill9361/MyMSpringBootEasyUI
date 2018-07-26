@@ -5,6 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.bill.msbeui.interceptor.GlobalInterceptor;
+import com.bill.msbeui.util.LoggerUtil;
 
 /**
  * 需要包扫描能扫描得到@Configuration
@@ -15,6 +16,8 @@ import com.bill.msbeui.interceptor.GlobalInterceptor;
  * @version
  */
 @Configuration
+//SpringBoot通过WebMvcAutoConfiguration来完成与Mvc有关的自动配置。如果希望完全接管WebMvc自动配置，可以在项目中创建一个注解了@EnableWebMvc的配置类
+//@EnableWebMvc
 public class ApplicationWebMvcConfig extends WebMvcConfigurerAdapter
 {
 
@@ -25,7 +28,7 @@ public class ApplicationWebMvcConfig extends WebMvcConfigurerAdapter
 	@Override
 	public void addInterceptors(InterceptorRegistry registry)
 	{
-		System.out.println("ApplicationWebMvcConfig......addInterceptors()");
+		LoggerUtil.getLogger().info("ApplicationWebMvcConfig......addInterceptors()");
 		registry.addInterceptor(new GlobalInterceptor())
 		//拦截所有
 		.addPathPatterns("/**");
@@ -33,5 +36,21 @@ public class ApplicationWebMvcConfig extends WebMvcConfigurerAdapter
 		//.excludePathPatterns("/company/getCompanysByName1.do");
 		super.addInterceptors(registry);
 	}
+	
+	/**
+	 * 需在类上加上@EnableWebMvc注解
+	 * 资源访问处理器
+	 * 其中默认配置的 /** 映射到 /static （或/public、/resources、/META-INF/resources）
+	 * 优先级顺序为：META-INF/resources > resources > static > public
+	 * 如果以上默认不够用，则按这个方法增加资源映射
+	 * 
+	 * 可以在jsp中使用/aa/**的方式访问/static/下的内容>  
+	 */
+	/*@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) 
+	{
+		LoggerUtil.getLogger().info("ApplicationWebMvcConfig...addResourceHandlers()");
+		registry.addResourceHandler("/aa/**").addResourceLocations("classpath:/static/");
+	}*/
 	
 }

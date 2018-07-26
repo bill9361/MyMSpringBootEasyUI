@@ -25,4 +25,22 @@ public class ApplicationMain
 		SpringApplication.run(ApplicationMain.class, args);
 	}
 	
+	/**
+	 * 修改DispatcherServlet默认配置
+	 * dispatcherServlet会接管所有请求（包括静态资源请求），如果修改默认的UrlMapping为*.do，那么一定会导致静态资源无法加载。
+	 * 就算在WebMvcConfigurerAdapter中配置了addResourceHandlers也没用。
+	 * 以前在SpringMVC中的DispatcherServlet配置*.do的目的是只拦截*.do的请求，目的是映射到Controller中，现在只需要在Controller中的方式上@RequestMapping("**.do")即可。
+	 * 或者再拦截器中拦截(个人觉得不需要,无需加.do一样能映射，但是不加后缀，表示：加任何后缀都能访问)
+	 * @param dispatcherServlet
+	 * @return
+	 */
+	/*@Bean
+    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) 
+	{
+        ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
+        registration.getUrlMappings().clear();
+        registration.addUrlMappings("*.do");
+        return registration;
+    }*/
+	
 }
