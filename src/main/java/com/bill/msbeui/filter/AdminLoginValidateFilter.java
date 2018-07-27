@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bill.msbeui.util.StringUtil;
@@ -32,10 +33,12 @@ public class AdminLoginValidateFilter implements Filter
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException
 	{
+		System.out.println("AdminLoginValidateFilter....doFilter()");
 		HttpSession httpSession = ((HttpServletRequest)request).getSession();
 		if(httpSession != null)
 		{
 			String userId = (String) httpSession.getAttribute("userId");
+			System.out.println(userId);
 			if(StringUtil.isNotEmpty(userId))
 			{
 				//放行
@@ -44,8 +47,8 @@ public class AdminLoginValidateFilter implements Filter
 			}
 		}
 		
-		request.getRequestDispatcher("/login/login.do").forward(request, response);
-		
+		//重定向到登录页面
+		((HttpServletResponse)response).sendRedirect(request.getServletContext().getContextPath()+"/login.jsp");
 	}
 
 	@Override

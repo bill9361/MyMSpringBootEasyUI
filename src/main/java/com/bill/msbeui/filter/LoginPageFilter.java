@@ -46,7 +46,6 @@ public class LoginPageFilter implements Filter
 			}
 		}
 		String uri = ((HttpServletRequest)request).getRequestURI();
-		System.out.println(uri);
 		if("/".equals(uri))
 		{
 			//重定向到登录页面
