@@ -3,9 +3,11 @@ package com.bill.msbeui.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * Description: 导航菜单Mapper <br/>
@@ -46,7 +48,22 @@ public interface NavMenuMapper
 	 * 添加导航菜单
 	 * @return
 	 */
-	@Insert("INSERT INTO nav_menu ('id', 'name', 'state', 'iconCls', 'parentId', 'href', 'createTime', 'createBy') VALUES (#{id}, #{name}, #{state}, #{iconCls}, #{parentId}, #{href}, #{createTime}, #{createBy})")
+	@Insert("INSERT INTO nav_menu (id, name, state, iconCls, parentId, href, createTime, createBy) VALUES (#{id}, #{name}, #{state}, #{iconCls}, #{parentId}, #{href}, #{createTime}, #{createBy})")
 	public int addNavMenu(Map<String,Object> paramMap);
 
+	/**
+	 * 更新导航菜单状态
+	 * @return
+	 */
+	@Update("update nav_menu set state=#{state} where id=#{id}")
+	public int updateNavMenuState(@Param("state") String state,@Param("id") String id);
+
+	/**
+	 * 删除导航菜单
+	 * @param string
+	 * @return
+	 */
+	@Delete("delete from nav_menu where id in (${ids})")
+	public int deleteNavMenu(@Param("ids") String ids);
+	
 }

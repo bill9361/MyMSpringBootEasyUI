@@ -51,7 +51,7 @@ public class NavMenuController
 	 */
 	@RequestMapping("/getNavMenu.do")
 	@ResponseBody
-	public Map<String,Object> getNavMenu(int page,int rows)
+	public Map<String,Object> getNavMenu(int page,int rows) throws Exception
 	{
 		return navMenuService.getNavMenu(page,rows);
 	}
@@ -65,12 +65,35 @@ public class NavMenuController
 	@ResponseBody
 	public boolean addNavMenu(HttpSession httpSession,@RequestBody Map<String, Object> paramMap) throws Exception
 	{
-		System.out.println("NavMenuController...addNavMenu()");
-		System.out.println(paramMap);
 		//添加Id
 		paramMap.put("id", UUID.randomUUID().toString().trim());
+		paramMap.put("state", "open");
 		paramMap.put("createBy", httpSession.getAttribute("userId"));
 		paramMap.put("createTime", TimeUtil.getCurrentTime());
 		return navMenuService.addNavMenu(paramMap);
+	}
+	/**
+	 * 获取父级导航菜单
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getFirstNavMenu.do")
+	@ResponseBody
+	public List<Map<String,Object>> getFirstNavMenu() throws Exception
+	{
+		return navMenuService.getNavMenuByParentId("0");
+	}
+	
+
+	/**
+	 * 删除导航菜单
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/deleteNavMenu.do")
+	@ResponseBody
+	public boolean deleteNavMenu(String ids) throws Exception
+	{
+		return navMenuService.deleteNavMenu(ids);
 	}
 }

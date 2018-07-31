@@ -17,16 +17,16 @@
 		<center style="padding-top: 20px;">
 			<form id="from_menu_add">
 				<p>名称：<input type="text" name="name" placeholder="菜单名称" style="width: 180px"/></p>
-				<p>状态：
+				<!-- <p>状态：
 					<select name="state" style="width: 185px">
-						<option value="open">展开</option>
-						<option value="closed" selected="selected">关闭</option>
+						<option value="open" selected="selected">展开</option>
+						<option value="closed">关闭</option>
 					</select>
-				</p>
+				</p> -->
 				<p>图标：<input type="text" name="iconCls" placeholder="菜单图标" style="width: 180px"/></p>
 				<p>链接：<input type="text" name="href" placeholder="菜单链接" style="width: 180px"/></p>
 				<p>父级：
-					<select name="parentId" style="width: 185px">
+					<select id="from_menu_add_parentId" name="parentId" style="width: 185px">
 						<option value="0" selected="selected">无</option>
 					</select>
 				</p>
@@ -69,7 +69,7 @@
 		        {field:'parentId',title:'父级Id',width:260,align:'center'},    
 		        {field:'href',title:'链接',width:260,align:'center',
 		        	formatter: function(value,row,index){
-		        		if(value == null || value == "NULL" || typeof(value) == "undefined"){
+		        		if(value == null || value == "NULL" || value == "" || typeof(value) == "undefined"){
 		        			return "无链接";
 		        		}
 		        		else{
@@ -88,7 +88,7 @@
 						title:'添加菜单',
 						iconCls:'icon-add',
 					    width:350,    
-					    height:300,    
+					    height:270,    
 					    modal:true,
 					    resizable:false,
 					    collapsible:false
@@ -101,29 +101,100 @@
 			},'-',{
 				iconCls: 'icon-remove',
 				text:"删除菜单",
-				handler: function(){alert('删除菜单')}
+				handler: function(){
+					//获取所有被选中的行
+					var selectionsRows = $("#menu_dg").datagrid("getSelections");
+					var len = selectionsRows.length;
+					if(len > 0){
+						$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+						    if (r){    
+						    	var deleteIds = "";
+						    	for ( var i in selectionsRows) {
+									var deleteId = selectionsRows[i].id;
+									deleteIds += deleteId+"','";
+								}
+						    	
+						    	$.ajax({
+						    		url:'<%=basePath %>navMenu/deleteNavMenu.do',
+						    		type:'post',
+						    		data:{'ids':deleteIds},
+						    		success:function(result){
+						    			if(result){
+						    				$.messager.alert('删除提示','删除成功！','info',function(){    
+					    				    	//刷新页面
+							    				window.location.reload();
+						    				});  
+						    				
+						    				
+						    			}
+						    			else{
+
+						    				$.messager.show({
+												title:'删除提示',
+												msg:'删除失败！',
+												timeout:3000,
+												showType:'slide'
+											});
+						    			}
+						    		}
+						    	});
+						    }    
+						});  
+					}
+					//没有选中行
+					else{
+						$.messager.alert('警告','请选择要删除的行');  
+					}
+				}
 			}]
 		}); 
 		
 		//点击添加菜单的确定按钮
 		$("#btn_menu_add_ok").click(function(){
-			var aa = $("#from_menu_add").serializeObject();
-			alert(aa);
-			<%-- $.ajax({
+			$.ajax({
 				url:'<%=basePath %>navMenu/addNavMenu.do',
 				type:'post',
 				data:$("#from_menu_add").serializeObject(),
 				dataType:'json',
 				contentType:'application/json',
 				success:function(result){
-					alert(result);
+					if(result){
+						//关闭窗口
+						$('#menu_add').window('close'); 
+						$.messager.alert('添加提示','成功添加一条记录！','info',function(){    
+    				    	//刷新页面
+		    				window.location.reload();
+	    				});  
+					}
+					else{
+						$.messager.show({
+							title:'添加提示',
+							msg:'添加失败！',
+							timeout:3000,
+							showType:'slide'
+						});
+					}
+
 				}
-			}); --%>
+			});
 		});
 		//点击添加菜单的取消按钮
 		$("#btn_menu_add_cancel").click(function(){
 			//关闭添加菜单窗口
-			$('#menu_add').window('close',true);
+			$('#menu_add').window('close');
+		});
+		//点击父级时触发
+		$("#from_menu_add_parentId").click(function(){
+			$.ajax({
+				url:'<%=basePath %>navMenu/getFirstNavMenu.do',
+				type:'post',
+				success:function(result){
+					for ( var i in result) {
+						var mapItem = result[i];
+						$("#from_menu_add_parentId").append("<option value="+mapItem.id+">"+mapItem.text+"</option>");
+					}
+				}
+			});
 		});
 		 
 	</script>

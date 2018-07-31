@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="<%=basePath %>static/js/easyui/jquery.easyui.min.js"></script>
 	<!-- 汉化 -->
 	<script type="text/javascript" src="<%=basePath %>static/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="<%=basePath %>static/js/jsonHandler.js"></script>
 </head>
 <body class="easyui-layout">   
     <div data-options="region:'north',title:'北',split:true" style="height:100px;background:#ffffff;"></div>   
@@ -39,7 +40,7 @@
     		    lines:true,
     		 	//在用户点击的时候提示,node是EasyUI框架传过来的
     		    onClick: function(node){
-    		    	if(node.href != null && node.href != 'NULL' && typeof(node.href) != "undefined"){
+    		    	if(node.href != null && node.href != 'NULL' && node.href != "" && typeof(node.href) != "undefined"){
     		    		var isExists = $('#center_tabs').tabs('exists',node.text);
     		    		//如果选项卡还没创建，才创建
     		    		if(!isExists){

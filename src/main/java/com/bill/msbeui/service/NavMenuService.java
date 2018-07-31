@@ -20,4 +20,6 @@ public interface NavMenuService
 
 	boolean addNavMenu(Map<String, Object> paramMap);
 
+	boolean deleteNavMenu(String ids);
+
 }
