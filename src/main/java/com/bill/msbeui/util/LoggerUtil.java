@@ -1,6 +1,7 @@
 package com.bill.msbeui.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Description: 日志工具类<br/>
@@ -11,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class LoggerUtil
 {
-	private static Logger logger = Logger.getLogger(LoggerUtil.class);
+	private static Logger logger = LoggerFactory.getLogger(LoggerUtil.class);
 	
 	private LoggerUtil(){}
 	
