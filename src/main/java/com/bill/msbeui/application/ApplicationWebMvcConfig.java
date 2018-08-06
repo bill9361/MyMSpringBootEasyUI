@@ -2,7 +2,7 @@ package com.bill.msbeui.application;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.bill.msbeui.interceptor.GlobalInterceptor;
 import com.bill.msbeui.util.LoggerUtil;
@@ -18,7 +18,7 @@ import com.bill.msbeui.util.LoggerUtil;
 @Configuration
 //SpringBoot通过WebMvcAutoConfiguration来完成与Mvc有关的自动配置。如果希望完全接管WebMvc自动配置，可以在项目中创建一个注解了@EnableWebMvc的配置类
 //@EnableWebMvc
-public class ApplicationWebMvcConfig extends WebMvcConfigurerAdapter
+public class ApplicationWebMvcConfig implements WebMvcConfigurer 
 {
 
 	/**
@@ -34,7 +34,6 @@ public class ApplicationWebMvcConfig extends WebMvcConfigurerAdapter
 		.addPathPatterns("/**");
 		//不拦截以下URL
 		//.excludePathPatterns("/company/getCompanysByName1.do");
-		super.addInterceptors(registry);
 	}
 	
 	/**
